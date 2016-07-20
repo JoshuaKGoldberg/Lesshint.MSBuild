@@ -1,0 +1,17 @@
+# Build tools
+.tscache
+src/.baseDir.ts
+node_modules
+nuget*.exe
+typings
+
+# Output
+dist
+src/**/*.js
+tools
+*.nupkg
+
+# Integration tests
+test/end-to-end/TestSolution/bin
+test/end-to-end/TestSolution/obj
+test/end-to-end/TestSolution/.vs

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target
+    Condition="'@(LessCompile)' != '' and '$(BuildingProject)' == 'true'"
+    Name="Lesshint">
+    <PropertyGroup>
+      <LessCompile Condition="'$(LessCompile)' == ''"></LessCompile>
+      <LesshintBreakBuildOnError Condition="'$(LesshintBreakBuildOnError)' == ''">false</LesshintBreakBuildOnError>
+      <LesshintDeleteFileListFile Condition="'$(LesshintDeleteFileListFile)' == ''">true</LesshintDeleteFileListFile>
+      <LesshintConfig Condition="'$(LesshintConfig)' == ''"></LesshintConfig>
+      <LesshintExclude Condition="'$(LesshintExclude)' == ''"></LesshintExclude>
+      <LesshintFilesRootDir Condition="'$(LesshintFilesRootDir)' == ''">$(MSBuildProjectDirectory)</LesshintFilesRootDir>
+      <LesshintFileListDir Condition="'$(LesshintFileListDir)' == ''">$(IntermediateOutDir)</LesshintFileListDir>
+      <LesshintFileListName Condition="'$(LesshintFileListName)' == ''">LesshintFileList-$(MSBuildProjectName).txt</LesshintFileListName>
+      <LesshintFileListFile>$(LesshintFileListDir)$(LesshintFileListName)</LesshintFileListFile>
+      <LesshintLinters Condition="'$(LesshintLinters)' == ''"></LesshintLinters>
+      <LesshintNodeExe Condition="'$(LesshintNodeExe)' == ''">$([System.IO.Path]::GetFullPath("$(MSBuildThisFileDirectory)\..\tools\node-6.1.0.exe"))</LesshintNodeExe>
+      <LesshintRunnerScript Condition="'$(LesshintRunnerScript)' == ''">$([System.IO.Path]::GetFullPath("$(MSBuildThisFileDirectory)\..\tools\index.js"))</LesshintRunnerScript>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <LesshintFile Include="@(LessCompile)" />
+    </ItemGroup>
+
+    <!-- Write file names to a text file so the runner can read them -->
+    <MakeDir Directories="$(LesshintFileListDir)" />
+    <WriteLinesToFile
+      File="$(LesshintFileListFile)"
+      Lines="@(LesshintFile->'%(Identity)')"
+      Overwrite="true" />
+
+    <!-- Run Lesshint via the runner -->
+    <Exec 
+      Command="&quot;$(LesshintNodeExe)&quot; --harmony --harmony_modules &quot;$(LesshintRunnerScript)&quot; --config &quot;$(LesshintConfig)&quot; --exclude &quot;$(LesshintExclude)&quot; --file-list-file &quot;$(LesshintFileListFile)&quot; --files-root-dir &quot;$(LesshintFilesRootDir)&quot;"
+      IgnoreExitCode="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+
+    <!-- Clean up our compiled file list when done -->
+    <Delete Condition="'$(LesshintDeleteFileListFile)' == 'true'" Files="$(LesshintFileListFile)" />
+
+    <!-- Return an error if linter returned exitcode -1 and we should break on errors -->
+    <Error Condition="'$(ErrorCode)' == '-1' and '$(LesshintBreakBuildOnError)' == 'true'" />
+  </Target>
+</Project>
