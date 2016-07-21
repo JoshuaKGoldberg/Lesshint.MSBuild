@@ -1,6 +1,5 @@
 /// <reference path="../typings/main.d.ts" />
 
-import { ChildProcess, spawn } from "child_process";
 import { ArgumentsCollection } from "./ArgumentsCollection";
 import { LesshintSearcher } from "./LesshintSearcher";
 
@@ -37,49 +36,13 @@ export class LintRunner {
 
     /**
      * Runs Lesshint on the added file paths.
-     * 
-     * @returns A promise for Lesshint errors, in alphabetical order of file path.
      */
-    public runLesshint(): Promise<string> {
-        const linter: ChildProcess = this.runSpawn(
-            "node",
-            [
-                this.pathToLinter,
-                ...this.argumentsCollection.toSpawnArgs(),
-                "--format",
-                "msbuild",
-                ...this.filePaths
-            ]);
-        let errors: string = "";
+    public runLesshint(): void {
+        const cli = require(this.pathToLinter);
 
-        return new Promise((resolve: (errors: string) => void, reject: (error: string) => void): void => {
-            linter.stdout.on("data", (data: Buffer): void => {
-                errors += data.toString();
-            });
-
-            linter.stderr.on("data", (data: Buffer): void => {
-                reject(data.toString());
-            });
-
-            linter.on("error", (error: any): void => {
-                reject(`Error: ${error}`);
-            });
-
-            linter.on("close", (): void => {
-                resolve(errors);
-            });
+        cli({
+            args: this.filePaths,
+            config: this.argumentsCollection.getConfig()
         });
-    }
-
-    /**
-     * Wrapper around child_process.spawn to log the command and args.
-     * 
-     * @param command   Command for child_process.spawn.
-     * @param args   Arguments for the command.
-     * @returns A running ChildProcess.
-     */
-    private runSpawn(command: string, args: string[]): ChildProcess {
-        console.log(`Spawning '${command} ${args.join(" ")}'...`);
-        return spawn(command, args);
     }
 }

@@ -17,6 +17,7 @@ At runtime, the list of .less files from `LessCompile` is output to a temporary 
 A .js runner file then takes in the path to that file list and runs Lesshint on them.
 
 The following properties may be overidden via your targets:
+* **LesshintAfterTargets** - MSBuild `AfterTargets` for the `Lesshint` target.
 * **LesshintBreakBuildOnError** - Whether linting failures should break the build. Defaults to `false`.
 * **LesshintConfig** - Path to the configuration file to use (will be merged with defaults).
 * **LesshintDeleteFileListFile** - Whether to delete the file list file when done. Defaults to `true`.

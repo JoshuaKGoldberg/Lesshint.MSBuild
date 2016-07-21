@@ -3,7 +3,7 @@
  */
 interface ICollected {
     /**
-     * Path to the configuration file to use (will be merged with defaults).
+     * Path to the configuration file.
      */
     "--config"?: string;
 
@@ -97,6 +97,13 @@ export class ArgumentsCollection {
      */
     public getFileListFile(): string {
         return this.collected["--file-list-file"];
+    }
+
+    /**
+     * @returns The path to the configuration file.
+     */
+    public getConfig(): string {
+        return this.collected["--config"];
     }
 
     /**

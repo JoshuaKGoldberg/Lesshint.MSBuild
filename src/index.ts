@@ -32,18 +32,10 @@ function getInputFilesList(filePath): string[] {
 
     console.log(`Running Lesshint on ${filePaths.length} file(s).`);
 
-    runner.runLesshint()
-        .then(lintErrors => {
-            const numErrors = lintErrors.match(/\n/g).length;
-
-            if (numErrors !== 0) {
-                console.error(lintErrors);
-            }
-
-            console.log(`${numErrors} error(s) found in ${filePaths.length} file(s).`);
-        })
-        .catch(error => {
-            console.error("Error running Lesshintj!");
-            console.error(error.toString());
-        });
+    try {
+        runner.runLesshint();
+    } catch (error) {
+        console.error("Error running Lesshint!");
+        console.error(error.toString());
+    }
 })();

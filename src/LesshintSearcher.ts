@@ -53,7 +53,7 @@ export class LesshintSearcher {
             this.packagesDirectory,
             this.lesshintPackage,
             pathSuffix);
-        const cliPath = path.join(packagePath, "lib", "cli.js");
+        const cliPath = path.join(packagePath, "lib", "cli");
         console.log(`Resolved Lesshint CLI to '${cliPath}'.`);
 
         return cliPath;
