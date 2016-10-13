@@ -2,8 +2,9 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Lesshint.MSBuild</id>
-    <version>0.1.0</version>
-    <authors>joshuakgoldberg</authors>
+    <title>Lesshint.MSBuild</title>
+    <version>1.0.0-beta0</version>
+    <authors>lesshint, joshuakgoldberg</authors>
     <owners>joshuakgoldberg</owners>
     <licenseUrl>https://github.com/JoshuaKGoldberg/Lesshint.MSBuild/blob/master/LICENSE.md</licenseUrl>
     <projectUrl>https://github.com/JoshuaKGoldberg/Lesshint.MSBuild</projectUrl>
@@ -11,18 +12,15 @@
     <description>
       An MSBuild target for linting Less code using Lesshint.
     </description>
-    <tags>less, lesshint, msbuild</tags>
+    <tags>lesshint, msbuild</tags>
     <dependencies>
-      <dependency id="lesshint" version="0.1.0" />
+      <dependency id="Lesshint" version="2.0.1" />
     </dependencies>
   </metadata>
   <files>
-    <file src="dist\Lesshint.MSBuild.targets" target="build" />
-
-    <file src="dist\LICENSE.md" target="tools" />
-    <file src="dist\node-*.exe" target="tools" />
-    <file src="dist\package.json" target="tools" />
-    <file src="dist\README.md" target="tools" />
-    <file src="dist\*.js" target="tools" />
+    <file src="LICENSE.md" target="tools" />
+    <file src="README.md" target="tools" />
+    <file src="src\tools\node-*.exe" target="tools" />
+    <file src="src\build\Lesshint.MSBuild.targets" target="build" />
   </files>
 </package>

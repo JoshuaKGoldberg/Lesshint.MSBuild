@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Target 
+    AfterTargets="Less"
+    Condition="'$(BuildingProject)' == 'true' or '$(LesshintRunWhenNotBuilding)' == 'true'"
+    Name="Lesshint">
+
+    <!-- PropertyGroup settings -->
+    <PropertyGroup>
+      <LesshintBreakBuildOnError Condition="'$(LesshintBreakBuildOnError)' == ''">false</LesshintBreakBuildOnError>
+      <LesshintConfig Condition="'$(LesshintConfig)' == ''"></LesshintConfig>
+      <LesshintErrorSeverity Condition="'$(LesshintErrorSeverity)' == ''"></LesshintErrorSeverity>
+      <LesshintNodeExe Condition="'$(LesshintNodeExe)' == ''">$([System.IO.Path]::GetFullPath("$(MSBuildThisFileDirectory)..\tools\node-6.1.0.exe"))</LesshintNodeExe>
+    </PropertyGroup>
+
+    <!-- Grab the first matching Lesshint CLI in a NuGet packages install -->
+    <ItemGroup Condition="'$(LesshintCli)' == ''">
+      <LesshintPotentialCli Include="$(SolutionDir)packages\lesshint.*.*.*\tools\node_modules\lesshint\bin\lesshint" />
+      <LesshintPotentialCli Include="$(MSBuildThisFileDirectory)..\..\lesshint.*.*.*\tools\node_modules\lesshint\bin\lesshint" />
+    </ItemGroup>
+    <PropertyGroup Condition="'$(LesshintCli)' == ''">
+      <LesshintCliProperty>@(LesshintPotentialCli);</LesshintCliProperty>
+      <LesshintCli>$(LesshintCliProperty.Substring(0, $(LesshintCliProperty.IndexOf(';'))))</LesshintCli>
+    </PropertyGroup>
+
+    <!-- LesshintExclude might include special characters, so those should be escaped -->
+    <PropertyGroup>
+      <LesshintExcludeJoined Condition="'@(LesshintExclude)' != ''">@(LesshintExclude, ' --exclude ')</LesshintExcludeJoined>
+      <LesshintExcludeJoined Condition="'$(LesshintExcludeJoined)' != ''">$(LesshintExcludeJoined.Replace("*", "%2A"))</LesshintExcludeJoined>
+    </PropertyGroup>
+
+    <!-- Build the Lesshint arguments -->
+    <PropertyGroup>
+      <LesshintArgs></LesshintArgs>
+      <LesshintArgs Condition="'$(LesshintConfig)' != ''">$(LesshintArgs) --config $(LesshintConfig)</LesshintArgs>
+      <LesshintArgs Condition="'$(LesshintExcludeJoined)' != ''">$(LesshintArgs) --exclude $(LesshintExcludeJoined)</LesshintArgs>
+      <LesshintArgs Condition="'@(LesshintLinters)' != ''">$(LesshintArgs) --linters @(LesshintLinters, ' --linters ')</LesshintArgs>
+      <LesshintArgs>$(LesshintArgs) @(LesshintFiles, ' ')</LesshintArgs>
+    </PropertyGroup>
+
+    <!-- Run Lesshint using the Node executable -->
+    <Exec 
+      Command="&quot;$(LesshintNodeExe)&quot; $(LesshintCli) $(LesshintArgs)"
+      Condition="'$(LesshintDisabled)' != 'true'"
+      ConsoleToMsBuild="true"
+      EchoOff="true"
+      IgnoreExitCode="true">
+      <Output TaskParameter="ConsoleOutput" ItemName="LesshintOutput" />
+      <Output TaskParameter="ExitCode" PropertyName="LesshintErrorCode" />
+    </Exec>
+
+    <!-- Return an error if the CLI returned exitcode -1 and we should break on errors -->
+    <Error Condition="'$(LesshintErrorCode)' == '-1' and '$(LesshintBreakBuildOnError)' == 'true'" />
+  </Target>
+</Project>
