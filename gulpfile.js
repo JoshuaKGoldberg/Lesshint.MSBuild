@@ -1,11 +1,11 @@
 const fs = require("fs");
 const gulp = require("gulp");
-const msbuild = require("gulp-msbuild");
 const nuget = require("gulp-nuget");
 const request = require("request");
 const runSequence = require("run-sequence");
+const msbuild = require("gulp-msbuild");
 
-const tests = ["LesshintArgs", "LesshintCli", "LesshintOutput"];
+const tests = ["LesshintArgs", "LesshintCli", "LesshintOutput", "LesshintVersion"];
 const testTasks = tests.map(testName => `test:${testName}`);
 
 tests.forEach(testName => {
@@ -29,6 +29,7 @@ gulp.task("nuget-download", callback => {
         .pipe(fs.createWriteStream("nuget.exe"))
         .on("close", callback);
 });
+
 
 gulp.task("nuget-pack", () => {
     return gulp.src("Lesshint.MSBuild.nuspec")

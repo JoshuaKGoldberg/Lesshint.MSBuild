@@ -10,11 +10,11 @@
     <projectUrl>https://github.com/JoshuaKGoldberg/Lesshint.MSBuild</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
-      An MSBuild target for linting Less code using Lesshint.
+      An MSBuild target for linting TypeScript code using Lesshint.
     </description>
-    <tags>lesshint, msbuild</tags>
+    <tags>Lesshint, msbuild</tags>
     <dependencies>
-      <dependency id="Lesshint" version="2.0.1" />
+      <dependency id="Lesshint" version="3.15.1" />
     </dependencies>
   </metadata>
   <files>

@@ -7,7 +7,7 @@
   <!-- Fake setup for the TypeScript build environment -->
   <Target AfterTargets="Rebuild" Name="CompileLessFiles">
     <ItemGroup>
-      <LessCompile Include="foo.less" />
+      <TypeScriptCompile Include="foo.ts" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -18,12 +18,13 @@
   <!-- Fake properties for the Lesshint task -->
   <PropertyGroup>
     <LesshintDisabled>true</LesshintDisabled>
+    <LesshintVersion>1.1?.2</LesshintVersion>
   </PropertyGroup>
 
   <!-- Post-Lesshint verification -->
   <Target AfterTargets="Lesshint" Name="Test">
     <PropertyGroup>
-      <LesshintCliExpected>$(SolutionDir)packages\lesshint.2.1.1\tools\node_modules\lesshint\lib\cli.js</LesshintCliExpected>
+      <LesshintCliExpected>$(SolutionDir)packages\lesshint.1.12.2\tools\node_modules\lesshint\lib\cli.js</LesshintCliExpected>
     </PropertyGroup>
 
     <Error
@@ -33,6 +34,6 @@
     <Message
       Condition="'$(LesshintCliExpected)' == '$(LesshintCli)'"
       Importance="High"
-      Text="LesshintCli passed." />
+      Text="LesshintVersion passed." />
   </Target>
 </Project>

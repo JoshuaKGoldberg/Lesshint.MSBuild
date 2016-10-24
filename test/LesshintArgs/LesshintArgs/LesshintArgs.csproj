@@ -5,12 +5,12 @@
   <Target Name="Rebuild" />
 
   <!-- Fake setup for the Less build environment -->
-  <Target AfterTargets="Rebuild" Name="Less">
+  <Target AfterTargets="Rebuild" Name="CompileLessFiles">
     <ItemGroup>
-      <LesshintFiles Include="foo.less" />
-      <LesshintFiles Include="bar.less" />
-      <LesshintFiles Include="baz.less" />
-      <LesshintFiles Include="qux.less" />
+      <LessCompile Include="foo.less" />
+      <LessCompile Include="bar.less" />
+      <LessCompile Include="baz.less" />
+      <LessCompile Include="qux.less" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -22,18 +22,19 @@
   <ItemGroup>
     <LesshintExclude Include="foo.less" />
     <LesshintExclude Include="bar.less" />
-    <LesshintLinters Include="linters/foo" />
-    <LesshintLinters Include="linters/bar" />
+    <LesshintLinters Include="linters/foo.js" />
+    <LesshintLinters Include="linters/bar.js" />
   </ItemGroup>
   <PropertyGroup>
     <LesshintDisabled>true</LesshintDisabled>
     <LesshintConfig>.lesshintrc</LesshintConfig>
+    <LesshintExtraArgs>--baz qux</LesshintExtraArgs>
   </PropertyGroup>
 
   <!-- Post-Lesshint verification -->
   <Target AfterTargets="Lesshint" Name="Test">
     <PropertyGroup>
-      <LesshintArgsExpected> --config .lesshintrc --exclude foo.less --exclude bar.less --linters linters/foo --linters linters/bar foo.less bar.less baz.less qux.less</LesshintArgsExpected>
+      <LesshintArgsExpected> --config .lesshintrc --exclude foo.less --exclude bar.less --linters linters/foo.js --linters linters/bar.js --baz qux foo.less bar.less baz.less qux.less</LesshintArgsExpected>
     </PropertyGroup>
 
     <Error

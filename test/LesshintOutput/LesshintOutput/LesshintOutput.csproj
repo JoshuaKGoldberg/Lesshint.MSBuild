@@ -4,10 +4,10 @@
 
   <Target Name="Rebuild" />
 
-  <!-- Fake setup for the Less build environment -->
-  <Target AfterTargets="Rebuild" Name="Less">
+  <!-- Fake setup for the TypeScript build environment -->
+  <Target AfterTargets="Rebuild" Name="CompileLessFiles">
     <ItemGroup>
-      <LesshintFiles Include="foo.less" />
+      <TypeScriptCompile Include="foo.less" />
     </ItemGroup>
 
     <PropertyGroup>
@@ -17,7 +17,7 @@
 
   <!-- Fake properties for the Lesshint task -->
   <PropertyGroup>
-    <LesshintCli>$(MSBuildThisFileDirectory)lesshint.js</LesshintCli>
+    <LesshintCli>$(MSBuildThisFileDirectory)lesshint-cli.js</LesshintCli>
   </PropertyGroup>
 
   <!-- Post-Lesshint verification -->

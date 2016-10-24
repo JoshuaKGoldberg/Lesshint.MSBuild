@@ -8,8 +8,6 @@
     "url": "https://github.com/JoshuaKGoldberg/Lesshint.MSBuild"
   },
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-nuget": "^0.1.5",
     "gulp": "^3.9.1",
     "gulp-msbuild": "^0.4.0",
     "gulp-nuget": "^1.0.1",
