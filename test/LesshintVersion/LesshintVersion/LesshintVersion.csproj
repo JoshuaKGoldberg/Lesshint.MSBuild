@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\src\build\Lesshint.MSBuild.targets" />
+
+  <Target Name="Rebuild" />
+
+  <!-- Fake setup for the TypeScript build environment -->
+  <Target AfterTargets="Rebuild" Name="CompileLessFiles">
+    <ItemGroup>
+      <TypeScriptCompile Include="foo.ts" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <BuildingProject>true</BuildingProject>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Fake properties for the Lesshint task -->
+  <PropertyGroup>
+    <LesshintDisabled>true</LesshintDisabled>
+    <LesshintVersion>1.1?.2</LesshintVersion>
+  </PropertyGroup>
+
+  <!-- Post-Lesshint verification -->
+  <Target AfterTargets="Lesshint" Name="Test">
+    <PropertyGroup>
+      <LesshintCliExpected>$(SolutionDir)packages\lesshint.1.12.2\tools\node_modules\lesshint\bin\lesshint</LesshintCliExpected>
+    </PropertyGroup>
+
+    <Error
+      Condition="'$(LesshintCliExpected)' != '$(LesshintCli)'"
+      Text="Expected LesshintCli to be%0a'$(LesshintCliExpected)'%0abut got%0a'$(LesshintCli)'.." />
+
+    <Message
+      Condition="'$(LesshintCliExpected)' == '$(LesshintCli)'"
+      Importance="High"
+      Text="LesshintVersion passed." />
+  </Target>
+</Project>

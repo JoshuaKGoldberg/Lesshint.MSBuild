@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\..\src\build\Lesshint.MSBuild.targets" />
+
+  <Target Name="Rebuild" />
+
+  <!-- Fake setup for the Less build environment -->
+  <Target AfterTargets="Rebuild" Name="CompileLessFiles">
+    <ItemGroup>
+      <LessCompile Include="foo.less" />
+      <LessCompile Include="bar.less" />
+      <LessCompile Include="baz.less" />
+      <LessCompile Include="qux.less" />
+    </ItemGroup>
+
+    <PropertyGroup>
+      <BuildingProject>true</BuildingProject>
+    </PropertyGroup>
+  </Target>
+
+  <!-- Fake properties for the Lesshint task -->
+  <ItemGroup>
+    <LesshintExclude Include="foo.less" />
+    <LesshintExclude Include="bar.less" />
+    <LesshintLinters Include="linters/foo.js" />
+    <LesshintLinters Include="linters/bar.js" />
+  </ItemGroup>
+  <PropertyGroup>
+    <LesshintDisabled>true</LesshintDisabled>
+    <LesshintConfig>.lesshintrc</LesshintConfig>
+    <LesshintExtraArgs>--baz qux</LesshintExtraArgs>
+  </PropertyGroup>
+
+  <!-- Post-Lesshint verification -->
+  <Target AfterTargets="Lesshint" Name="Test">
+    <PropertyGroup>
+      <LesshintArgsExpected> --config .lesshintrc --exclude foo.less --exclude bar.less --linters linters/foo.js --linters linters/bar.js --baz qux foo.less bar.less baz.less qux.less</LesshintArgsExpected>
+    </PropertyGroup>
+
+    <Error
+      Condition="'$(LesshintArgsExpected)' != '$(LesshintArgs)'"
+      Text="Expected LesshintArgs to be%0a'$(LesshintArgsExpected)'%0abut got%0a'$(LesshintArgs)'.." />
+
+    <Message
+      Condition="'$(LesshintArgsExpected)' == '$(LesshintArgs)'"
+      Importance="High"
+      Text="LesshintArgs passed." />
+  </Target>
+</Project>

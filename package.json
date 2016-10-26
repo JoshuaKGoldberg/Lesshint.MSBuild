@@ -1,27 +1,17 @@
 {
-  "name": "tslint-lesshint",
-  "version": "0.0.1",
-  "description": "An MSBuild target for linting Less code using lesshint.",
+  "name": "lesshint-msbuild",
+  "version": "1.0.0-beta0",
+  "description": "An MSBuild target for linting Less code using Lesshint.",
   "author": "Joshua K Goldberg",
   "license": "MIT",
   "repository": {
     "url": "https://github.com/JoshuaKGoldberg/Lesshint.MSBuild"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "grunt": "^0.4.5",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-exec": "^0.4.7",
-    "grunt-mocha-test": "^0.12.7",
-    "grunt-npm-install": "^0.3.0",
-    "grunt-nuget": "^0.1.5",
-    "grunt-ts": "^5.5.1",
-    "grunt-tslint": "^3.0.3",
-    "mocha": "^2.4.5",
-    "msbuild": "^0.3.0",
-    "tslint": "^3.10.2",
-    "typescript": "^1.8.9",
-    "typings": "^0.7.3"
+    "gulp": "^3.9.1",
+    "gulp-msbuild": "^0.4.0",
+    "gulp-nuget": "^1.0.1",
+    "request": "^2.75.0",
+    "run-sequence": "^1.2.2"
   }
 }
