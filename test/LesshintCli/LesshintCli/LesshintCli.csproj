@@ -23,7 +23,7 @@
   <!-- Post-Lesshint verification -->
   <Target AfterTargets="Lesshint" Name="Test">
     <PropertyGroup>
-      <LesshintCliExpected>$(SolutionDir)packages\lesshint.2.1.1\tools\node_modules\lesshint\lib\cli.js</LesshintCliExpected>
+      <LesshintCliExpected>$(SolutionDir)packages\lesshint.2.1.1\tools\node_modules\lesshint\bin\lesshint</LesshintCliExpected>
     </PropertyGroup>
 
     <Error
